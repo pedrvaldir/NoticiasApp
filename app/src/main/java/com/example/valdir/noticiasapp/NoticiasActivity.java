@@ -10,20 +10,13 @@ public class NoticiasActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = NoticiasActivity.class.getName();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_noticias);
 
         // Cria uma lista falsa de noticias
-        ArrayList<Noticia> noticias = new ArrayList<Noticia>();
-
-        noticias.add(new Noticia("Titulo1","Secao"));
-        noticias.add(new Noticia("Titulo2","Secao2"));
-        noticias.add(new Noticia("Titulo3","Secao3"));
-        noticias.add(new Noticia("Titulo4","Secao4"));
-        noticias.add(new Noticia("Titulo5","Secao5"));
+        ArrayList<Noticia> noticias = Uteis.ExtrairNoticias();
 
         NoticiasAdapter noticiasAdapter = new NoticiasAdapter(this, noticias);
 
