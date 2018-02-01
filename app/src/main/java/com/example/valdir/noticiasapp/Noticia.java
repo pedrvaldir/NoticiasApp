@@ -15,10 +15,9 @@ public class Noticia {
     String mUrl;
 
 
-    public Noticia(String titulo, String secao, String url) {
+    public Noticia(String titulo, String secao) {
         mTitulo = titulo;
         mSecao = secao;
-        mUrl = url;
     }
 
 
