@@ -1,6 +1,9 @@
 package com.example.valdir.noticiasapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -10,13 +13,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NoticiasActivity extends AppCompatActivity implements LoaderCallbacks<List<Noticia>>{
-
-    public static final String LOG_TAG = NoticiasActivity.class.getName();
 
     /**
      * Valor constante para o ID do loader de earthquake. Podemos escolher qualquer inteiro.
@@ -25,6 +27,11 @@ public class NoticiasActivity extends AppCompatActivity implements LoaderCallbac
     private static final int NOTICIAS_LOADER_ID = 1;
 
     private String REQUISICAO_URL_APIGUARDIAN = "https://content.guardianapis.com/search?q=curitiba&api-key=test";
+
+    /** TextView que é mostrada quando a lista é vazia */
+    private TextView mTextViewListaVazia;
+
+    private View mIndicadorCarregamento;
 
     private NoticiasAdapter mAdapter;
 
@@ -38,16 +45,22 @@ public class NoticiasActivity extends AppCompatActivity implements LoaderCallbac
 
         // Encontra uma referencia de {@link ListView} no layout
         ListView noticiasListView = (ListView) findViewById(R.id.lista);
+        mIndicadorCarregamento = findViewById(R.id.indicador_carregamento);
+        mTextViewListaVazia = (TextView) findViewById(R.id.view_nulo);
+
+        noticiasListView.setEmptyView(mTextViewListaVazia);
+
+        // Esconde a informação da tela inicial vazia
+        mTextViewListaVazia.setVisibility(View.GONE);
+
+        // Exibe o indicador de carregamento porque foi requisitado uma nova pesquisa
+        mIndicadorCarregamento.setVisibility(View.VISIBLE);
 
         mAdapter = new NoticiasAdapter(NoticiasActivity.this, new ArrayList<Noticia>());
 
         // Defina o adaptador no {@link ListView}
         // então a lista pode ser preenchida na interface do usuário
         noticiasListView.setAdapter(mAdapter);
-
-        final LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(NOTICIAS_LOADER_ID, null, NoticiasActivity.this);
-
         //quando alguma noticia for clicada acionar um intent para abrir a url da noticia
         noticiasListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                                     @Override
@@ -68,6 +81,26 @@ public class NoticiasActivity extends AppCompatActivity implements LoaderCallbac
                                                     }
                                                 }
         );
+
+        // Obter uma referência ao ConnectivityManager para verificar o estado da conectividade de rede
+         ConnectivityManager connMgr = (ConnectivityManager)
+         getSystemService(Context.CONNECTIVITY_SERVICE);
+
+         // Obter detalhes sobre a rede de dados padrão atualmente ativa
+         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+         // Se houver uma conexão de rede, obtenha dados
+
+          if (networkInfo != null && networkInfo.isConnected()) {
+              final LoaderManager loaderManager = getLoaderManager();
+              loaderManager.initLoader(NOTICIAS_LOADER_ID, null, NoticiasActivity.this);
+          }else{
+              mIndicadorCarregamento = findViewById(R.id.indicador_carregamento);
+              mIndicadorCarregamento.setVisibility(View.GONE);
+
+               // Atualize o estado vazio com a msg de sem conexão com a internet
+              mTextViewListaVazia.setText(R.string.sem_internet);
+          }
     }
 
     @Override
@@ -80,19 +113,25 @@ public class NoticiasActivity extends AppCompatActivity implements LoaderCallbac
     @Override
     public void onLoadFinished(Loader<List<Noticia>> loader, List<Noticia> noticias) {
 
+        // Esconde o indicador de carregamento porque os dados foram carregados
+        mIndicadorCarregamento = findViewById(R.id.indicador_carregamento);
+        mIndicadorCarregamento.setVisibility(View.GONE);
+
         // Limpa o adapter de dados de livros anteriores
         mAdapter.clear();
+
+        mTextViewListaVazia.setText(R.string.lista_vazia);
 
         // Se há uma lista válida de {@link livro}s, então os adiciona ao data set do adapter.
         // Isto ativará a atualização da ListView.
         if (noticias != null && !noticias.isEmpty()) {
-            mAdapter.addAll(noticias);
+              mAdapter.addAll(noticias);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<List<Noticia>> loader) {
-        // Loader reset, so we can clear out our existing data.
+        // Reinicialização do carregador, para que possamos limpar nossos dados existentes.
         mAdapter.clear();
     }
 }

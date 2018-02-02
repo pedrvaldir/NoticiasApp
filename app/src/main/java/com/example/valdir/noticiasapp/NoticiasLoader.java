@@ -15,12 +15,6 @@ import java.util.List;
  */
 public class NoticiasLoader extends AsyncTaskLoader<List<Noticia>> {
 
-    //Utilizado para referenciar String na interface principal
-    private static Context mContext;
-
-    /** Tag para mensagens de log */
-    private static final String LOG_TAG = NoticiasLoader.class.getName();
-
     /** URL da busca */
     private String mUrl;
 

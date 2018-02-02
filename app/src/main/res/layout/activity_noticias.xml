@@ -1,7 +1,33 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lista"
-    android:orientation="vertical"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:divider="@null"
-    android:dividerHeight="0dp"/>
+    android:layout_height="match_parent">
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/lista"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
+
+    <!-- View vazia é apenas visível quando a lista não tiver itens. -->
+    <TextView
+        android:id="@+id/view_nulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textAppearance="?android:textAppearanceMedium"/>
+    <!-- Indicador de carregamento apenas é mostrado antes do primeiro carregamento -->
+
+    <ProgressBar
+        android:id="@+id/indicador_carregamento"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" />
+
+</RelativeLayout>

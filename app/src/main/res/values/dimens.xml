@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="layout_lista_item">16dp</dimen>
+    <dimen name="secao_lista_item">16dp</dimen>
+    <dimen name="pad_secao_lista_item">4dp</dimen>
+    <dimen name="txt_lista_item">18sp</dimen>
+</resources>

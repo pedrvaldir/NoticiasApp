@@ -8,4 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="tituloItemLista">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/txt_lista_item</item>
+    </style>
+
+    <style name="secaoItemLista">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/txt_lista_item</item>
+        <item name="android:paddingLeft">@dimen/pad_secao_lista_item</item>
+    </style>
 </resources>
